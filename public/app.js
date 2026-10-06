@@ -55,11 +55,12 @@ async function api(route, data, method = 'POST') {
   const result = await response.json(); if (!response.ok) throw new Error(result.error || t('操作失败')); return result;
 }
 function size(bytes = 0) { if (bytes === 0) return '0 B'; const i = Math.min(3, Math.floor(Math.log(bytes) / Math.log(1024))); return `${(bytes / 1024 ** i).toFixed(i ? 1 : 0)} ${['B', 'KB', 'MB', 'GB'][i]}`; }
-function platformName(platform) { return { win32: 'Windows', darwin: 'macOS', linux: 'Linux' }[platform] || t('电脑'); }
+function platformName(platform) { return { win32: 'Windows', darwin: 'macOS', linux: 'Linux', android: t('Android 手机'), ios: 'iPhone / iPad' }[platform] || t('设备'); }
+function platformIcon(platform) { return { win32: 'monitor', darwin: 'laptop', linux: 'monitor', android: 'phone', ios: 'phone' }[platform] || 'devices'; }
 function fileIcon(job) { return job.kind === 'text' ? 'text' : /\.(png|jpe?g|gif|webp|bmp|svg|heic)$/i.test(job.name) ? 'image' : 'file'; }
 function showPage(page, syncForm = true) {
   currentPage = page;
-  const titles = { home: [t('传输工作台'), t('让分享，近一点'), t('两台电脑都运行软件，手动配置后直接传输。')], devices: [t('配置设备'), t('连接另一台电脑'), t('在两台软件里互相添加连接地址，配置会自动保存。')], history: [t('传输记录'), t('分享的足迹'), t('查看传输进度，以及每一次成功送达的分享。')], settings: [t('偏好设置'), t('按你的方式分享'), t('开启局域网传输，并设置这台电脑的接收目录。')] };
+  const titles = { home: [t('传输工作台'), t('让分享，近一点'), t('两台设备都运行软件，手动配置后直接传输。')], devices: [t('配置设备'), t('连接另一台设备'), t('在两台软件里互相添加连接地址，配置会自动保存。')], history: [t('传输记录'), t('分享的足迹'), t('查看传输进度，以及每一次成功送达的分享。')], settings: [t('偏好设置'), t('按你的方式分享'), t('开启局域网传输，并设置这台电脑的接收目录。')] };
   for (const key of Object.keys(titles)) $(`${key}-view`).hidden = key !== page;
   document.querySelectorAll('.nav-item').forEach(item => item.classList.toggle('active', item.dataset.page === page));
   $('breadcrumb-title').textContent = titles[page][0];
@@ -86,8 +87,8 @@ function addFiles(files) {
 async function chooseFiles() { if (window.desktop) { const files = await window.desktop.selectFiles(); for (const file of files) if (!selectedFiles.some(x => x.path === file.path)) selectedFiles.push(file); renderFiles(); } else $('file-input').click(); }
 function choosePeer(id) { selectedPeer = id; $('target-device').value = id; renderPeers(); updateSendButton(); }
 function peerCards(peers) {
-  if (!peers.length) return `<div class="devices-empty"><span class="empty-radar">${icon('devices')}</span><div><strong>${t('先配置你的另一台电脑')}</strong><p>${t('两台电脑都运行局域传送，在“配置设备”中互相添加 IP 和端口。')}</p></div><button class="text-button" data-action="add-peer">${t('手动配置')}${icon('arrow')}</button></div>`;
-  return peers.map(peer => `<div class="peer-entry"><button class="peer-card ${peer.id === selectedPeer ? 'selected' : ''}" data-peer="${escapeHtml(peer.id)}" title="${escapeHtml(errorText(peer.error || ''))}" ${!peer.online ? 'disabled' : ''}><span class="peer-avatar">${icon(peer.platform === 'darwin' ? 'laptop' : 'monitor')}</span><span class="peer-info"><strong title="${escapeHtml(peer.name)}">${escapeHtml(peer.name)}</strong><small>${escapeHtml(peer.address)}:${peer.port}</small><span class="online-label">${peer.online ? '<i class="status-dot"></i>' + (peer.enabled === false ? t('传输已关闭 · ') : t('在线 · ')) : t('未连接 · ')}${platformName(peer.platform)}</span></span>${icon('arrow').replace('<svg ', '<svg class="peer-arrow" ')}</button><button class="remove-peer" data-remove-peer="${escapeHtml(peer.id)}" aria-label="${escapeHtml(t('移除 {name}', { name: peer.name }))}">${t('移除')}</button></div>`).join('');
+  if (!peers.length) return `<div class="devices-empty"><span class="empty-radar">${icon('devices')}</span><div><strong>${t('先配置你的另一台设备')}</strong><p>${t('两台设备都运行局域传送，在“配置设备”中互相添加 IP 和端口。')}</p></div><button class="text-button" data-action="add-peer">${t('手动配置')}${icon('arrow')}</button></div>`;
+  return peers.map(peer => `<div class="peer-entry"><button class="peer-card ${peer.id === selectedPeer ? 'selected' : ''}" data-peer="${escapeHtml(peer.id)}" title="${escapeHtml(errorText(peer.error || ''))}" ${!peer.online ? 'disabled' : ''}><span class="peer-avatar">${icon(platformIcon(peer.platform))}</span><span class="peer-info"><strong title="${escapeHtml(peer.name)}">${escapeHtml(peer.name)}</strong><small>${escapeHtml(peer.address)}:${peer.port}</small><span class="online-label">${peer.online ? '<i class="status-dot"></i>' + (peer.enabled === false ? t('传输已关闭 · ') : t('在线 · ')) : t('未连接 · ')}${platformName(peer.platform)}</span></span>${icon('arrow').replace('<svg ', '<svg class="peer-arrow" ')}</button><button class="remove-peer" data-remove-peer="${escapeHtml(peer.id)}" aria-label="${escapeHtml(t('移除 {name}', { name: peer.name }))}">${t('移除')}</button></div>`).join('');
 }
 function renderPeers() {
   const online = state.peers.filter(p => p.online);

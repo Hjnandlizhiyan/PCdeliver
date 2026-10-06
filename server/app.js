@@ -102,9 +102,12 @@ async function createApp(options = {}) {
   async function refreshPeer(peer, signal) {
     try {
       const remote = await readPeerInfo(peer, signal);
-      if (remote.protocol !== 'landrop-v1' || remote.id !== peer.id || !/^[a-f0-9]{64}$/.test(remote.token) || typeof remote.name !== 'string') throw new Error('设备身份已改变，请重新添加这台电脑');
+      if (remote.protocol !== 'landrop-v1' || remote.id !== peer.id || !/^[a-f0-9]{64}$/.test(remote.token) || typeof remote.name !== 'string') throw new Error('设备身份已改变，请重新添加这台设备');
       if (closing) throw new Error('软件正在退出');
-      Object.assign(peer, { token: remote.token, name: remote.name.slice(0, 40), enabled: remote.enabled !== false, lastSeen: Date.now(), online: true, error: '' });
+      const platform = typeof remote.platform === 'string' ? remote.platform : 'unknown';
+      const platformChanged = peer.platform !== platform;
+      Object.assign(peer, { token: remote.token, name: remote.name.slice(0, 40), platform, enabled: remote.enabled !== false, lastSeen: Date.now(), online: true, error: '' });
+      if (platformChanged) await persist();
       emit(); return peer;
     } catch (err) {
       peer.online = false; peer.error = err.message; emit(); throw err;
