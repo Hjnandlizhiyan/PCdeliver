@@ -1,0 +1,15 @@
+node_modules/
+build/runtime-files.nsh
+release/
+.landrop/
+test-output/
+*.log
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+*.pfx
+*.p12
+数据/
+接收文件/

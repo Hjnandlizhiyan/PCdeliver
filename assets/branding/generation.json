@@ -1,0 +1,14 @@
+{
+  "tool": "image_gen — built-in",
+  "date": "2026-10-06",
+  "style": "扁平彩色漫画风格的二次元少女 Logo",
+  "assets": {
+    "master": "landrop-girl.png",
+    "appLogo": "../../public/logo.png",
+    "desktopIcon": "../../desktop/icon.png",
+    "windowsIcon": "../../desktop/icon.ico"
+  },
+  "initialPrompt": "Use case: logo-brand. Create one finished logo mascot for a local-network desktop file-transfer app named LAN DROP (局域传送). Primary request: an original anime girl character in flat, colorful manga/comic style. Subject: cheerful young adult anime girl, a large friendly head and a small shoulder/hoodie silhouette, short mint-teal bob hair with a simple side fringe, warm coral hair clip shaped like two opposite transfer arrows, expressive teal eyes and a confident gentle smile. Composition: one centered, compact square head-and-shoulders emblem, very readable as a desktop app icon; the face is the dominant shape, generous clear perimeter, all hair fully inside the frame. Style: clean thick dark teal outlines, smooth crisp shapes, solid flat color fills, very restrained cel shading, polished cute Japanese comic illustration, no painterly texture, no gradients, no 3D. Color palette: mint, saturated teal, ivory, warm peach skin and a small coral accent, coordinated with the software's existing green interface. Scene/backdrop: genuinely transparent outside the emblem. Constraints: one character, one finished emblem only, no text, no lettering, no watermark, no logo sheet, no mockup, no background scene, no tiny accessories, no hands, no realistic rendering. Keep the shape visually simple and useful at small favicon sizes.",
+  "finalEditPrompt": "Edit this LAN DROP anime girl logo. Keep exactly the same character identity, mint-teal short bob haircut, smiling face, two opposite coral transfer-arrow hairclips, white hoodie, large head-and-shoulders composition, centered single logo emblem, and transparent outer background. Make only the illustration style flatter: replace ALL smooth gradients, airbrushed skin blush, soft hair highlights and painterly shading with a small number of crisp, uniform solid-color shapes. True flat-color manga logo, clean bold dark-teal outlines, maximum one hard-edged shadow tone per surface, simplified hair into several large flat mint and teal shapes, peach skin with tiny solid coral cheek marks, simple flat teal eyes, ivory hoodie. No gradient or texture anywhere. Preserve charm and face proportions. No text, no watermark, no background. This is a polished brand logo to read clearly at app-icon sizes.",
+  "integration": "透明背景；仅进行常规图标缩放和 PNG/ICO 格式转换。"
+}

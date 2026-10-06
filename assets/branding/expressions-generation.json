@@ -1,0 +1,20 @@
+{
+  "tool": "image_gen — built-in",
+  "date": "2026-10-06",
+  "reference": "landrop-girl.png",
+  "expressions": [
+    {
+      "purpose": "接收成功",
+      "master": "landrop-girl-received.png",
+      "appAsset": "../../public/mascot-received.png",
+      "prompt": "Use case: identity-preserve. Asset type: receiving-success expression sticker for LAN DROP desktop app. Input image 1 is the existing app mascot identity and style reference. Create one new expression of EXACTLY this same anime girl: mint-teal short bob hair, two opposite coral arrow hairclips on the same side, dark teal outlines, ivory hoodie with teal lining, same face and chibi proportions. Expression and pose: delighted receiving success, both eyes closed in joyful crescent smile, warm cheerful open smile, holding one simple small ivory document close to her chest with two simplified hands; a single solid green check mark on the document. Flat colorful manga/comic style, crisp bold outline and large solid color shapes, minimal hard edged cel shading, no smooth gradients, no texture, no 3D. Centered compact square head-and-shoulders sticker, all hair, hands and document fully within frame with clear outer padding. Transparent background outside the character. One character, one finished sticker only, no words, no text, no watermark, no scene, no UI mockup, no sheet. Preserve recognizability and colors of the existing mascot."
+    },
+    {
+      "purpose": "发送成功",
+      "master": "landrop-girl-sent.png",
+      "appAsset": "../../public/mascot-sent.png",
+      "prompt": "Use case: identity-preserve. Asset type: sending-success expression sticker for LAN DROP desktop app. Input image 1 is the existing app mascot identity and style reference. Create a new distinct sending-success expression of EXACTLY this same anime girl. Keep mint-teal short bob hair, two opposite coral arrow hairclips on the same side, dark teal bold outlines, ivory hoodie with teal lining, identical chibi head and shoulder proportions. Expression and pose: proud friendly wink, one bright teal eye open and the other eye closed, joyful smile, one raised hand making a clearly readable thumbs-up gesture; a small simple ivory paper airplane beside the raised thumb as a sending cue. Flat colorful manga/comic style, crisp outlines, uniform solid color shapes with only minimal hard edged cel shading, no smooth gradients, no texture, no 3D. Centered compact square head-and-shoulders sticker with generous outer padding, entire hair, thumb and airplane inside frame. Genuinely transparent background. One character and one finished sticker only, no text, no lettering, no watermark, no scene, no mockup, no contact sheet. Preserve the original mascot identity and color palette."
+    }
+  ],
+  "integration": "保留透明背景；应用图片仅进行普通缩放。"
+}
