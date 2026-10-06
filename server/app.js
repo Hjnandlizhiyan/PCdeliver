@@ -31,10 +31,10 @@ function isLocal(req) { return ['127.0.0.1', '::1', '::ffff:127.0.0.1'].includes
 function requestJson(peer, route, data, signal, method = 'POST') {
   return new Promise((resolve, reject) => {
     let connected = false;
-    const fail = error => reject(new Error(connectionError(error, connected), { cause: error }));
+    const fail = error => reject(Object.assign(new Error(connectionError(error, connected), { cause: error }), { code: error.code }));
     const body = data === undefined ? null : Buffer.from(JSON.stringify(data));
     const req = http.request({ hostname: peer.address, port: peer.port, path: route, method, signal, headers: { ...(peer.token ? { 'X-Lan-Token': peer.token } : {}), ...(body ? { 'Content-Type': 'application/json', 'Content-Length': body.length } : {}) } }, async res => {
-      try { const result = await jsonBody(res); if (res.statusCode >= 400) throw new Error(result.error || '对方设备拒绝了请求'); resolve(result); } catch (err) { fail(err); }
+      try { const result = await jsonBody(res); if (res.statusCode >= 400) throw Object.assign(new Error(result.error || '对方设备拒绝了请求'), { code: result.errorCode || 'PEER_REQUEST_FAILED' }); resolve(result); } catch (err) { fail(err); }
     });
     req.on('socket', socket => { connected = !socket.connecting; if (socket.connecting) socket.once('connect', () => { connected = true; }); });
     req.setTimeout(100000, () => req.destroy(Object.assign(new Error('回应超时'), { code: 'ETIMEDOUT' })));
@@ -45,7 +45,7 @@ async function createApp(options = {}) {
   const dataDir = options.dataDir || path.join(__dirname, '..', '.landrop');
   await fsp.mkdir(dataDir, { recursive: true });
   const saved = await readState(path.join(dataDir, 'state.json')) || {};
-  const config = { id: saved.id || crypto.randomUUID(), name: options.name || saved.name || os.hostname(), receiveDir: options.receiveDir || saved.receiveDir || path.join(dataDir, 'received'), enabled: saved.enabled !== false };
+  const config = { id: saved.id || crypto.randomUUID(), name: options.name || saved.name || os.hostname(), receiveDir: options.receiveDir || saved.receiveDir || path.join(dataDir, 'received'), enabled: saved.enabled !== false, language: saved.language === 'en' ? 'en' : 'zh-CN' };
   await fsp.mkdir(config.receiveDir, { recursive: true });
   const token = crypto.randomBytes(32).toString('hex'), uiToken = crypto.randomBytes(32).toString('hex');
   const peers = new Map(), clients = new Set(), active = new Map(), jobs = new Map(), operations = new Set();
@@ -63,7 +63,7 @@ async function createApp(options = {}) {
   function info() { return { protocol: 'landrop-v1', id: config.id, name: config.name, platform: process.platform, port, token, enabled: config.enabled }; }
   function state() {
     const interfaces = networkAddresses();
-    return { self: { id: config.id, name: config.name, platform: process.platform, port, addresses: interfaces.map(x => x.address), interfaces }, settings: { receiveDir: config.receiveDir, enabled: config.enabled }, peers: [...peers.values()].map(({ token: _, checking: __, ...p }) => p), transfers: [...jobs.values()], warning, uiToken };
+    return { self: { id: config.id, name: config.name, platform: process.platform, port, addresses: interfaces.map(x => x.address), interfaces }, settings: { receiveDir: config.receiveDir, enabled: config.enabled, language: config.language }, peers: [...peers.values()].map(({ token: _, checking: __, ...p }) => p), transfers: [...jobs.values()], warning, uiToken };
   }
   function persist() {
     const contents = JSON.stringify({ ...config, peers: [...peers.values()].map(({ id, name, address, port, platform }) => ({ id, name, address, port, platform })), history: [...jobs.values()].filter(j => TERMINAL.has(j.status)).slice(-200) }, null, 2);
@@ -157,7 +157,7 @@ async function createApp(options = {}) {
       update(job, { status: 'completed', progress: 100, bytes: job.size, sha256: result.sha256 });
     } catch (err) {
       if (control.remoteId) requestJson(peer, `/peer/request/${control.remoteId}`, undefined, undefined, 'DELETE').catch(() => {});
-      update(job, { status: controller.signal.aborted ? 'cancelled' : /拒绝/.test(err.message) ? 'rejected' : 'failed', error: controller.signal.aborted ? '传输已取消' : err.message });
+      update(job, { status: controller.signal.aborted ? 'cancelled' : ['TRANSFER_REJECTED', 'ECONNREFUSED'].includes(err.code) ? 'rejected' : 'failed', error: controller.signal.aborted ? '传输已取消' : err.message });
     } finally { finish(); }
     return job;
   }
@@ -260,12 +260,17 @@ async function createApp(options = {}) {
         if (route === '/api/scan' && req.method === 'POST') { await refreshPeers(); return reply(res, 200, { ok: true }); }
         if (route === '/api/settings' && req.method === 'POST') {
           const data = await jsonBody(req);
+          if (data.language !== undefined && !['zh-CN', 'en'].includes(data.language)) return reply(res, 400, { error: '不支持的界面语言' });
+          const languageChanged = data.language !== undefined && data.language !== config.language;
+          if (data.language !== undefined) config.language = data.language;
           if (typeof data.name === 'string') config.name = data.name.trim().slice(0, 40) || os.hostname();
           if (typeof data.enabled === 'boolean') {
             config.enabled = data.enabled;
             if (!config.enabled) for (const [id] of active) cancel(id);
           }
-          await persist(); emit(); return reply(res, 200, { ok: true });
+          await persist(); emit();
+          if (languageChanged) options.onLanguageChanged?.(config.language);
+          return reply(res, 200, { ok: true });
         }
         if (route === '/api/cancel' && req.method === 'POST') { const { id } = await jsonBody(req); cancel(id); return reply(res, 200, { ok: true }); }
         if (route === '/api/text' && req.method === 'POST') {
@@ -297,7 +302,7 @@ async function createApp(options = {}) {
         return reply(res, 404, { error: '接口不存在' });
       }
       if (req.method !== 'GET') return reply(res, 405, { error: '请求方法不支持' });
-      const assets = { '/': 'index.html', '/app.js': 'app.js', '/styles.css': 'styles.css', '/mark.svg': 'mark.svg', '/logo.png': 'logo.png', '/mascot-received.png': 'mascot-received.png', '/mascot-sent.png': 'mascot-sent.png' };
+      const assets = { '/': 'index.html', '/app.js': 'app.js', '/i18n.js': 'i18n.js', '/styles.css': 'styles.css', '/mark.svg': 'mark.svg', '/logo.png': 'logo.png', '/mascot-received.png': 'mascot-received.png', '/mascot-sent.png': 'mascot-sent.png' };
       if (!assets[route]) return reply(res, 404, { error: '页面不存在' });
       const file = path.join(__dirname, '..', 'public', assets[route]);
       res.writeHead(200, { 'Content-Type': MIME[path.extname(file)], 'Content-Security-Policy': "default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' blob: data:; connect-src 'self'; object-src 'none'; base-uri 'none'; frame-ancestors 'none'" });

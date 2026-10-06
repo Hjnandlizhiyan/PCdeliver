@@ -1,6 +1,6 @@
 {
   "name": "landrop-desktop",
-  "version": "0.4.0",
+  "version": "0.4.2",
   "description": "局域传送 — 文件、图片与文字的局域网桌面传输工具",
   "author": "LanDrop",
   "main": "desktop/main.js",
@@ -9,10 +9,12 @@
     "postinstall": "node node_modules/electron/install.js",
     "start": "electron .",
     "web": "node server/start.js",
-    "test": "node --test test/network.test.js test/transfer.test.js test/tray.test.js test/storage.test.js",
+    "test": "node --test test/network.test.js test/transfer.test.js test/tray.test.js test/storage.test.js test/i18n.test.js",
     "pack": "electron-builder --win nsis --x64 --config.electronDist=node_modules/electron/dist",
     "pack:qa": "node scripts/build-installer-qa.cjs",
-    "verify:installer": "node scripts/verify-installer.cjs"
+    "verify:installer": "node scripts/verify-installer.cjs",
+    "test:i18n-ui": "node scripts/verify-i18n-ui.cjs",
+    "test:i18n-desktop": "node scripts/verify-i18n-desktop.cjs"
   },
   "devDependencies": {
     "electron": "^44.5.1",
@@ -21,11 +23,39 @@
   "build": {
     "appId": "local.landrop.desktop",
     "productName": "局域传送",
-    "directories": { "output": "release", "buildResources": "build" },
+    "directories": {
+      "output": "release",
+      "buildResources": "build"
+    },
     "afterPack": "scripts/installer-files.cjs",
-    "files": ["desktop/**/*", "server/**/*", "public/**/*", "package.json"],
-    "win": { "target": "nsis", "icon": "desktop/icon.ico", "artifactName": "LanDrop-${version}-Setup.exe" },
-    "nsis": { "oneClick": false, "perMachine": false, "allowElevation": false, "allowToChangeInstallationDirectory": true, "deleteAppDataOnUninstall": false, "createDesktopShortcut": true, "createStartMenuShortcut": true, "installerLanguages": ["zh_CN"], "include": "build/installer.nsh" }
+    "files": [
+      "desktop/**/*",
+      "server/**/*",
+      "public/**/*",
+      "package.json"
+    ],
+    "win": {
+      "target": "nsis",
+      "icon": "desktop/icon.ico",
+      "artifactName": "LanDrop-${version}-Setup.exe"
+    },
+    "nsis": {
+      "oneClick": false,
+      "perMachine": false,
+      "allowElevation": false,
+      "allowToChangeInstallationDirectory": true,
+      "deleteAppDataOnUninstall": false,
+      "createDesktopShortcut": true,
+      "createStartMenuShortcut": true,
+      "installerLanguages": [
+        "zh_CN",
+        "en_US"
+      ],
+      "include": "build/installer.nsh",
+      "displayLanguageSelector": true
+    }
   },
-  "engines": { "node": ">=22.12" }
+  "engines": {
+    "node": ">=22.12"
+  }
 }

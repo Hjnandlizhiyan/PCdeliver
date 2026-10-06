@@ -29,3 +29,23 @@ test('托盘的打开、隐藏和退出动作独立，单击和双击可唤回�
 test('图标加载失败时阻止软件在没有托盘入口的情况下运行', () => {
   assert.throws(() => createTray({ nativeImage: { createFromPath: () => ({ isEmpty: () => true }) } }, {}, 'test'), /托盘图标加载失败/);
 });
+
+test('托盘语言可反复切换，菜单操作保持有效', () => {
+  let instance, opened = 0;
+  class Tray {
+    constructor() { instance = this; }
+    setToolTip(value) { this.tooltip = value; }
+    setContextMenu(value) { this.menu = value; }
+    on() {}
+    isDestroyed() { return false; }
+    destroy() {}
+  }
+  const controller = createTray({ Tray, Menu: { buildFromTemplate: items => items }, nativeImage: { createFromPath: () => ({ isEmpty: () => false }) } }, { showWindow: () => opened++ }, 'test', 'win32', 'en');
+  assert.match(instance.tooltip, /LanDrop.*\nRight-click to quit/);
+  instance.menu.find(item => item.label === 'Open window').click();
+  controller.setLanguage('zh-CN');
+  instance.menu.find(item => item.label === '打开窗口').click();
+  controller.setLanguage('en');
+  instance.menu.find(item => item.label === 'Open window').click();
+  assert.equal(opened, 3);
+});
