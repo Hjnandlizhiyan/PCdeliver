@@ -5,5 +5,6 @@ contextBridge.exposeInMainWorld('desktop', {
   chooseFolder: () => ipcRenderer.invoke('choose-folder'),
   openFolder: () => ipcRenderer.invoke('open-folder'),
   showFile: id => ipcRenderer.invoke('show-file', id),
-  copyText: text => ipcRenderer.invoke('copy-text', text)
+  copyText: text => ipcRenderer.invoke('copy-text', text),
+  openExternal: url => ipcRenderer.invoke('open-external', url)
 });

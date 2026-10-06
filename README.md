@@ -4,13 +4,17 @@
 
 [简体中文](#简体中文) · [English](#english)
 
+**v0.4.3**：偏好设置新增 Bilibili 作者主页、GitHub 作者主页、DeepSeekLover 官网，以及 QQ 交流群 **305402575** 的复制按钮；支持中英文，链接在系统浏览器中打开。Windows 安装包位于 `release/LanDrop-0.4.3-Setup.exe`，可覆盖安装并保留数据。
+
+**v0.4.3** adds bilingual creator and community shortcuts in Preferences: Bilibili, GitHub, DeepSeekLover, and a copy button for QQ group **305402575**. Links open in the system browser. Use `release/LanDrop-0.4.3-Setup.exe` to update, or download it from the release link below.
+
 ## 简体中文
 
 在同一个局域网中，直接在两台电脑之间传输文档、图片、音频、视频、文字和剪贴板截图。中英文可切换的桌面界面，手动配置设备，无需账号或云端存储。
 
 v0.4.2 中英文切换版：进入“偏好设置 → 界面语言”，选择“简体中文”或“English”，立即生效并自动保存，重启后仍使用所选语言。界面、状态与错误提示、托盘菜单和桌面弹窗同步切换；两台电脑可以分别使用不同语言。设备名称、文件名、接收目录和传输的文字保持原样。安装向导可选择中文或英文，其语言与应用内的语言设置分别保存。
 
-也可通过 `npm run pack` 在本地生成 `release/LanDrop-0.4.2-Setup.exe`。下方下载入口为已发布的 v0.4.2。
+也可通过 `npm run pack` 在本地生成 `release/LanDrop-0.4.3-Setup.exe`。下方下载入口为 v0.4.3。
 
 v0.4.2 补齐了“以太网”“本地连接”等常见系统网卡名称及编号的翻译；例如英文界面显示 `Ethernet 2`，中文界面显示“以太网 2”。自定义网卡名称保持原样，系统里的实际网卡名称不会被修改。
 
@@ -18,7 +22,7 @@ v0.4.2 补齐了“以太网”“本地连接”等常见系统网卡名称及�
 
 ### 下载与主要功能
 
-[下载 Windows x64 安装包（v0.4.2）](https://github.com/Hjnandlizhiyan/PCdeliver/releases/download/v0.4.2/LanDrop-0.4.2-Setup.exe) · [SHA-256 校验文件](https://github.com/Hjnandlizhiyan/PCdeliver/releases/download/v0.4.2/SHA256-0.4.2.txt) · [查看所有版本](https://github.com/Hjnandlizhiyan/PCdeliver/releases)
+[下载 Windows x64 安装包（v0.4.3）](https://github.com/Hjnandlizhiyan/PCdeliver/releases/download/v0.4.3/LanDrop-0.4.3-Setup.exe) · [SHA-256 校验文件](https://github.com/Hjnandlizhiyan/PCdeliver/releases/download/v0.4.3/SHA256-0.4.3.txt) · [查看所有版本](https://github.com/Hjnandlizhiyan/PCdeliver/releases)
 
 - 文件按原内容传输，单个文件上限 20 GB；支持多文件选择、拖放、进度与取消。
 - 文字、链接与剪贴板截图传输，发送和接收成功显示少女表情提示。
@@ -49,7 +53,7 @@ v0.4.2 补齐了“以太网”“本地连接”等常见系统网卡名称及�
 
 ### 在两台电脑上使用
 
-1. 在两台 Windows 电脑上分别安装同一版本的软件。下载 `LanDrop-0.4.2-Setup.exe`，或使用本地生成的 `release/LanDrop-0.4.2-Setup.exe`。安装向导可选择文件夹，例如 `D:\软件\局域传送`，不需要另装 Node.js。请选择当前账户可以写入的目录。
+1. 在两台 Windows 电脑上分别安装同一版本的软件。下载 `LanDrop-0.4.3-Setup.exe`，或使用本地生成的 `release/LanDrop-0.4.3-Setup.exe`。安装向导可选择文件夹，例如 `D:\软件\局域传送`，不需要另装 Node.js。请选择当前账户可以写入的目录。
 2. 两台电脑连接同一个局域网。在双方软件的“偏好设置”中打开“启用局域网传输”并保存；默认已经开启。
 3. 双方进入“配置设备”，查看“这台电脑的连接地址”，分别填写另一台电脑的地址并点击“保存设备”。
 4. 回到工作台，选择已配置的在线设备，添加文件或输入文字，点击“发送”。
@@ -219,7 +223,7 @@ LanDrop transfers documents, images, audio, video, text, and clipboard screensho
 
 The **v0.4.2 bilingual edition** adds **Preferences → Display language**. Choose **简体中文** or **English** to switch immediately. Your choice is saved automatically and restored at startup. The interface, status and error messages, tray menus, and desktop dialogs use the selected language. Each computer can use a different language. Device names, filenames, receive paths, and transferred text keep their original content. The installer also supports Chinese and English; installer language and application language are saved separately.
 
-You can also build the installer locally with `npm run pack`; the output is `release/LanDrop-0.4.2-Setup.exe`. The public download below points to the published v0.4.2 release.
+You can also build the installer locally with `npm run pack`; the output is `release/LanDrop-0.4.3-Setup.exe`. The download below points to v0.4.3.
 
 v0.4.2 also translates standard system adapter labels, including Ethernet and Local Area Connection, with their numeric suffixes. For example, the interface shows `Ethernet 2` in English and “以太网 2” in Chinese. Custom adapter names are preserved, and actual system adapter names are never changed.
 
@@ -227,7 +231,7 @@ v0.4.2 also translates standard system adapter labels, including Ethernet and Lo
 
 ### Downloads and main features
 
-[Download the Windows x64 installer (v0.4.2)](https://github.com/Hjnandlizhiyan/PCdeliver/releases/download/v0.4.2/LanDrop-0.4.2-Setup.exe) · [SHA-256 checksums](https://github.com/Hjnandlizhiyan/PCdeliver/releases/download/v0.4.2/SHA256-0.4.2.txt) · [All releases](https://github.com/Hjnandlizhiyan/PCdeliver/releases)
+[Download the Windows x64 installer (v0.4.3)](https://github.com/Hjnandlizhiyan/PCdeliver/releases/download/v0.4.3/LanDrop-0.4.3-Setup.exe) · [SHA-256 checksums](https://github.com/Hjnandlizhiyan/PCdeliver/releases/download/v0.4.3/SHA256-0.4.3.txt) · [All releases](https://github.com/Hjnandlizhiyan/PCdeliver/releases)
 
 - Transfer files without changing their contents, up to 20 GB per file. Select multiple files, drag and drop, track progress, and cancel transfers.
 - Share text, links, and clipboard screenshots. Mascot notifications celebrate successful sending and receiving.
@@ -258,7 +262,7 @@ Successful sending shows a wink and a thumbs-up; successful receiving shows the 
 
 ### Using LanDrop on two computers
 
-1. Install the same version on both Windows computers. Download `LanDrop-0.4.2-Setup.exe`, or use the locally built `release/LanDrop-0.4.2-Setup.exe`. Choose an installation folder that your account can write to, such as `D:\Apps\LanDrop`. No separate Node.js installation is needed.
+1. Install the same version on both Windows computers. Download `LanDrop-0.4.3-Setup.exe`, or use the locally built `release/LanDrop-0.4.3-Setup.exe`. Choose an installation folder that your account can write to, such as `D:\Apps\LanDrop`. No separate Node.js installation is needed.
 2. Connect both computers to the same LAN. In **Preferences**, turn on **Enable LAN transfers** and save on each computer. It is enabled by default.
 3. On both computers, open **Devices** and look at **This computer’s connection addresses**. Enter the other computer’s address and click **Save device**.
 4. Return to **Transfer desk**, choose a configured online device, add files or enter text, and click **Send**.

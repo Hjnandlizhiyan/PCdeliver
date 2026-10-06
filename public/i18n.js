@@ -6,6 +6,18 @@
   else root.LanDropI18n = api;
 })(typeof globalThis !== 'undefined' ? globalThis : this, function () {
   const en = {
+    '作者与社区': 'Creator & community',
+    '关注更新，交流使用心得': 'Follow updates and share your experience',
+    'Bilibili 主页': 'Bilibili profile',
+    'GitHub 主页': 'GitHub profile',
+    'DeepSeekLover 官网': 'DeepSeekLover website',
+    '在浏览器中打开': 'Open in your browser',
+    'QQ 交流群': 'QQ community',
+    '复制群号': 'Copy group number',
+    '群号已复制': 'Group number copied',
+    '复制失败，请手动复制群号：305402575': 'Could not copy. Group number: 305402575',
+    '无法打开此链接': 'Unable to open this link',
+    '未找到可打开网页的浏览器': 'No browser is available to open this page',
     '局域传送': 'LanDrop',
     '局域传送 · 让分享近一点': 'LanDrop · Share a little closer',
     '局域传送首页': 'LanDrop home',
@@ -102,7 +114,7 @@
     '两台电脑都开启后，即可与已配置设备互传文件和文字。': 'Enable this on both computers to share files and text with configured devices.',
     '已配置设备直接接收，无需弹窗确认；未配置设备无法发送。': 'Configured devices receive directly without a confirmation dialog. Unconfigured devices cannot send.',
     '保存设置': 'Save settings',
-    '0.4.2 · 中英文切换版': '0.4.2 · Bilingual edition',
+    '0.4.3 · 中英文切换版': '0.4.3 · Bilingual edition',
     '设备之间直接通信。右下角托盘图标可打开、隐藏窗口或退出软件。当前采用局域网 HTTP 传输，内容未端到端加密；建议在可信的家庭或办公网络使用。': 'Devices communicate directly. Use the system tray icon to open or hide the window, or quit. Transfers use HTTP over your LAN without end-to-end encryption; use a trusted home or office network.',
     '文字消息': 'Text message',
     '关闭': 'Close',

@@ -5,6 +5,7 @@ const { createApp } = require('../server/app');
 const { createTray } = require('./tray');
 const { prepareStorage, validReceiveDirectory, readState } = require('./storage');
 const { translate, translateError } = require('../public/i18n');
+const communityLinks = require('../public/community-links');
 let startupLanguage = 'zh-CN';
 const currentLanguage = () => service?.state().settings.language || startupLanguage;
 const t = (key, values) => translate(currentLanguage(), key, values);
@@ -76,6 +77,11 @@ else {
     ipcMain.handle('open-folder', async event => { trusted(event); return shell.openPath(service.state().settings.receiveDir); });
     ipcMain.handle('show-file', async (event, id) => { trusted(event); const file = service.getReceivedPath(id); if (file) shell.showItemInFolder(file); });
     ipcMain.handle('copy-text', (event, text) => { trusted(event); if (typeof text === 'string' && text.length <= 100000) clipboard.writeText(text); });
+    ipcMain.handle('open-external', async (event, url) => {
+      trusted(event);
+      if (!Object.values(communityLinks).includes(url)) throw new Error(t('无法打开此链接'));
+      await shell.openExternal(url);
+    });
     window.webContents.setWindowOpenHandler(() => ({ action: 'deny' }));
     window.webContents.on('will-navigate', (event, url) => { if (new URL(url).origin !== origin) event.preventDefault(); });
     await window.loadURL(origin);

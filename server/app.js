@@ -302,7 +302,7 @@ async function createApp(options = {}) {
         return reply(res, 404, { error: '接口不存在' });
       }
       if (req.method !== 'GET') return reply(res, 405, { error: '请求方法不支持' });
-      const assets = { '/': 'index.html', '/app.js': 'app.js', '/i18n.js': 'i18n.js', '/styles.css': 'styles.css', '/mark.svg': 'mark.svg', '/logo.png': 'logo.png', '/mascot-received.png': 'mascot-received.png', '/mascot-sent.png': 'mascot-sent.png' };
+      const assets = { '/': 'index.html', '/app.js': 'app.js', '/i18n.js': 'i18n.js', '/community-links.js': 'community-links.js', '/community.js': 'community.js', '/styles.css': 'styles.css', '/mark.svg': 'mark.svg', '/logo.png': 'logo.png', '/mascot-received.png': 'mascot-received.png', '/mascot-sent.png': 'mascot-sent.png' };
       if (!assets[route]) return reply(res, 404, { error: '页面不存在' });
       const file = path.join(__dirname, '..', 'public', assets[route]);
       res.writeHead(200, { 'Content-Type': MIME[path.extname(file)], 'Content-Security-Policy': "default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' blob: data:; connect-src 'self'; object-src 'none'; base-uri 'none'; frame-ancestors 'none'" });
